@@ -1,24 +1,27 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
-import FormattedDate from '../../components/FormattedDate.astro';
-
+import FormattedDate from '../components/FormattedDate.astro';
 const posts = (await getCollection('blog')).sort(
 	(a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
 );
+
 ---
 
 <!doctype html>
 <html lang="pt-br">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
+        <style>
+            main {
+                display: flex;
+                flex-direction: row;
+            }
 			ul {
-				flex-direction: column;
-				align-items: center;
+				
 				gap: 2rem;
 				list-style-type: none;
 				margin: 0;
@@ -31,32 +34,24 @@ const posts = (await getCollection('blog')).sort(
 				text-decoration: none;
 				transition: 0.2s ease;
 			}
+            ul li a {
+				display: block;		
+			}
+
 			ul li img {
-				width: calc(40% - 1rem);
+                width: calc(50% - 1rem);
 				margin-bottom: 0.7rem;
 				border-radius: 12px;
-			}
-			ul li a {
-				display: flex;		
 			}
 
 			.title {
 				margin: 0;
 				color: rgb(var(--black));
 				line-height: 1;
-				margin : 1rem;
-			}
-			.date,.desc {
-				margin: 0;
-				color: rgb(var(--gray));
-				margin : 1rem;
-				line-height: 1;
+				margin :  1rem 0;
 			}
 
 			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
 			ul a:hover img {
 				box-shadow: var(--box-shadow);
 			}
@@ -87,13 +82,7 @@ const posts = (await getCollection('blog')).sort(
 							<li>
 								<a href={`/blog/${post.slug}/`}>
 									<img width={720} height={360} src={post.data.heroImage} alt="" />
-									<div class="post">
 										<h4 class="title">{post.data.title}</h4>
-										<p class="desc">{post.data.description}</p>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-									</div>
 								</a>
 							</li>
 						))
